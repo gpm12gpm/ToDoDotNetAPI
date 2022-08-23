@@ -11,5 +11,9 @@ namespace EmployeeDataManager.Contract
     {
         List<EmployeeDto> GetAllEmployees();
         EmployeeDto GetEmployeeById(int id);
+
+        int SaveEmployee(EmployeeDto employee);
+
+        void UpdateEmployee(int id, EmployeeDto employeeDto);
     }
 }

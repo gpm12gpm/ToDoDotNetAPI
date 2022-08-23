@@ -16,6 +16,8 @@ namespace EmployeeDataManager
             var employees = this.employeeDB.Employee.Select(x => new EmployeeDto
             {
                 Id = x.EmployeeID,
+                LastName = x.LastName,
+                FirstName = x.FirstName,
                 EmployeeName = x.FirstName + " " + x.LastName
             }).ToList();
 
@@ -27,6 +29,8 @@ namespace EmployeeDataManager
             var employee = this.employeeDB.Employee.Where(x => x.EmployeeID == id).Select(x => new EmployeeDto
             {
                 Id = x.EmployeeID,
+                LastName= x.LastName,
+                FirstName= x.FirstName,
                 EmployeeName = x.FirstName + " " + x.LastName
             }).FirstOrDefault();
 
@@ -45,6 +49,29 @@ namespace EmployeeDataManager
             return employees;
         }
 
+        public int SaveEmployee(EmployeeDto employee)
+        {
+            Employee emp = new Employee();
+            //emp.EmployeeID = employee.Id;
+            emp.FirstName = employee.FirstName;
+            emp.LastName = employee.LastName;
+            this.employeeDB.Employee.Add(emp);
+            this.employeeDB.SaveChanges();
+            return emp.EmployeeID;
+        }
 
+        public void UpdateEmployee(int id, EmployeeDto employeeDto)
+        {
+            var employee = this.employeeDB.Employee.Where(x => x.EmployeeID == id).FirstOrDefault();
+
+            if(employee==null)
+            {
+                return;
+            }
+
+            employee.FirstName = employeeDto.FirstName;
+            employee.LastName = employeeDto.LastName;
+            this.employeeDB.SaveChanges();
+        }
     }
 }

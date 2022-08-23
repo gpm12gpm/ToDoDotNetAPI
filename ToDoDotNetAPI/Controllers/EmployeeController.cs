@@ -25,5 +25,29 @@ namespace ToDoDotNetAPI.Controllers
         {
             return this.employeeDataService.GetAllEmployees();
         }
+
+        [HttpPost]
+        public IActionResult Create(EmployeeDto employee)
+        {
+            
+            int id = this.employeeDataService.SaveEmployee(employee);
+            
+            if(id==0)
+            {
+                return BadRequest("Duplicate Record");
+            }
+
+            employee.EmployeeName = employee.FirstName + " " + employee.LastName;
+            employee.Id = id;
+            return Ok(employee);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, EmployeeDto employee)
+        {
+            this.employeeDataService.UpdateEmployee(id, employee);
+
+            return Ok();
+        }
     }
 }
